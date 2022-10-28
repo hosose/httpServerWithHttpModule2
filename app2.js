@@ -27,6 +27,25 @@ const httpRequestListener = function (request, response) {
         response.writeHead(200, { "content-Type": "application/json" });
         response.end(JSON.stringify({ message: "userCreated" }));
       });
+    } else if (url === "/users/postup") {
+      let body = "";
+
+      request.on("data", (data) => {
+        body += data;
+      });
+
+      request.on("end", () => {
+        const user = JSON.parse(body);
+
+        posts.push({
+          userId: user.id,
+          userName: user.name,
+          postingId: user.postingId,
+          postingTitle: user.postingTitle,
+          postingContent: user.postingContent,
+        });
+        response.end(JSON.stringify({ message: "postCreated" }));
+      });
     }
   }
 };
