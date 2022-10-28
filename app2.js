@@ -47,6 +47,10 @@ const httpRequestListener = function (request, response) {
         response.end(JSON.stringify({ message: "postCreated" }));
       });
     }
+  } else if (method === "GET") {
+    if (url === "/users/postlist") {
+      response.end(JSON.stringify({ data: posts }));
+    }
   }
 };
 
