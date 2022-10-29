@@ -116,7 +116,6 @@ const httpRequestListener = function (request, response) {
         (user) => user.userID === userId && user.postingId === postingId
       );
 
-      console.log(result);
       let body = "";
 
       request.on("data", (data) => {
@@ -137,8 +136,21 @@ const httpRequestListener = function (request, response) {
         response.end(JSON.stringify({ posts }));
       });
     }
+  } else if (method === "DELETE") {
+    if (url.startsWith("/users/postlist")) {
+      const userId = parseInt(url.split("/")[3]);
+
+      const postingId = parseInt(url.split("/")[4]);
+
+      const result = posts.findIndex(
+        (user) => user.userID === userId && user.postingId === postingId
+      );
+
+      posts.splice(result, 1);
+
+      response.end(JSON.stringify({ posts }));
+    }
   }
-  //user 에서 찾은 객체들 중에 posting id가 같은지 확인하는 것
 };
 
 server.on("request", httpRequestListener);
